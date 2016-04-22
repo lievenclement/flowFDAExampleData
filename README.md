@@ -8,7 +8,7 @@ flowFDAExampleData is an [R](http://www.r-project.org) package with example data
 
 Install flowFDAExampleData from its
 [GitHub repository](https://github.com/lievenclement/flowFDAExampleData). You first need to
-install the [devtools](https://cran.r-project.org/package=devtools) packages.
+install the [devtools](https://cran.r-project.org/package=devtools) and the [flowFDA](https://github.com/lievenclement/flowFDA)packages.
 
 ```r
 install.packages("devtools")
