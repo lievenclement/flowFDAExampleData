@@ -1,0 +1,17 @@
+citHeader("To cite package 'flowFDAExampleData' in publications use citation below:")
+if(!exists("meta") || is.null(meta)) meta <- packageDescription("flowFDAExampleData")
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version ", meta$Version)
+
+citEntry(entry = "Manual",
+         title = "flowFDAExampleData: Experiment Data for analysis with flowFDA (flow cytometry Functional Data Analysis).",
+         author = personList(as.person("Lieven Clement"),as.person("Olivier Thas")),                             
+         year = year,
+         note = paste("R package version", meta$Version),
+
+         textVersion =
+         paste0("Clement, L. and Thas, O. (",
+                year,
+                "). flowFDAExampleData: Experiment Data for analysis with flowFDA (flow cytometry Functional Data Analysis). R package version", meta$Version, ".")
+)
+

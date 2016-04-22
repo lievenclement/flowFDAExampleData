@@ -1,0 +1,17 @@
+Package: flowFDAExampleData
+Type: Package
+Title: Example data for the flowFDA package for Flow Cytometry
+        Functional Data Analysis
+Version: 0.99
+Author: Lieven Clement and Olivier Thas
+Date: 2014-02-17
+Maintainer: Lieven Clement <lieven.clement@gmail.com>
+Depends: R (>= 2.10), flowCore
+Imports: methods
+Suggests: flowFDA
+Description: This package provides data from the stress experiment of De Roy et
+    al. (2012) to run the examples in the flowFDA package.
+License: GPL (>=2)
+Collate: 'data.R'
+biocViews: NA
+Packaged: 2014-02-21 11:18:40 UTC; u0071934

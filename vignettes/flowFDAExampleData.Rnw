@@ -1,0 +1,142 @@
+\documentclass[10pt]{article}
+%\VignetteIndexEntry{Using flowFDAExampleData}
+%\VignetteIndexEntry{flowFDAExampleData}
+ 
+ \usepackage{graphicx}
+  \usepackage{subfigure}
+ \usepackage[english]{babel}
+ \usepackage{a4wide}
+  \usepackage{color}
+% \usepackage[cp1252]{inputenc}
+\usepackage{amssymb}
+  \usepackage{subfigure}
+ \usepackage{amsmath,amsthm}
+  \usepackage{longtable}
+ \usepackage{multirow}
+ \usepackage{times}
+ \usepackage[bf]{caption}
+ \linespread{1.0}
+ \usepackage[a4paper,plainpages=false]{hyperref} % links in pdf files
+ \usepackage{color}
+\usepackage{epstopdf}
+ \usepackage{Sweave}
+   \usepackage[utf8x]{inputenc} 
+\parskip 0.4cm
+\parindent 0cm
+
+
+\newcommand{\mb}[1]
+   {\boldsymbol{#1}}
+\newcommand{\trace}[1]
+   {\mbox{tr}\left[#1\right]}
+\newcommand{\E}[1]
+  {\mathrm{E}\left(#1\right)}
+\newcommand{\Var}[1]
+  {\mathrm{Var}\left(#1\right)}
+\newcommand{\Cov}[1]
+  {\mathrm{Cov}\left(#1\right)}
+\newcommand{\Cor}[1]
+  {\mathrm{Cor}\left(#1\right)}
+\newcommand{\norm}[2]
+  {\langle #1 , #2 \rangle}
+\newcommand{\bX}{\mb{X}}
+\newcommand{\bx}{\mb{x}}
+\newcommand{\bZ}{\mb{Z}}
+\newcommand{\bz}{\mb{z}}
+\newcommand{\bY}{\mb{Y}}
+\newcommand{\bU}{\mb{U}}
+\newcommand{\bV}{\mb{V}}
+\newcommand{\bh}{\mb{h}}
+\newcommand{\bg}{\mb{g}}
+\newcommand{\bS}{\mb{S}}
+\newcommand{\bA}{\mb{A}}
+\newcommand{\bB}{\mb{B}}
+\newcommand{\bsigma}{\mb{\Sigma}}
+\newcommand{\btheta}{\mb{\theta}}
+\newcommand{\bEta}{\mb{\eta}}
+\newcommand{\bbeta}{\mb{\beta}} 
+\newcommand{\balpha}{\mb{\alpha}}
+\newcommand{\bgamma}{\mb{\gamma}}
+\newcommand{\bphi}{\mb{\varphi}}
+\newcommand{\prob}[1]{\mathrm{P}\left( #1 \right)}
+\newcommand{\quant}[1]{\mathrm{Q}_{\tau}\left( #1 \right)}
+\newcommand{\I}[1]{\mathrm{I}\left( #1 \right)}
+\newcommand{\leqs}{\preccurlyeq}
+\newcommand{\geqs}{\succcurlyeq}
+\newcommand{\expit}{\mathrm{expit}}
+\newcommand{\logit}{\mathrm{logit}}
+\newcommand{\cH}{\mathcal{H}}
+\newcommand{\odds}[1]{\mathrm{odds}\left( #1 \right)}
+%\DeclareMathOperator*{\min}{min} 
+
+
+
+
+
+\title{Example data for \texttt{flowFDA} package}
+\author{Lieven Clement \& Olivier Thas}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+\tableofcontents
+
+
+\section{Introduction to the data}\label{sec:intro}
+
+This package provides a dataset for users that want to try the examples and the code in the vignettes of the \texttt{flowFDA} package. The package consists of a subset of the data provided by De Roy et al. (2012). It contains a flowset of n=30 different flows for the stress experiment. Two types of treatments were conducted on Evian water to simulate changing physico- chemical conditions: temperature and nutrient treatment. For the heat treatment, 1 L bottles were incubated for 3 and 24 h at 37 degrees Celsius. For the nutrient treatment, 1 mL of water was replaced by 1 mL of a 1/10 dilution of autoclaved Luria-Bertani broth (10 g tryptone, 5 g yeast extract and 10 g NaCl per L) to a final TOC of 0.65 mg/L. The bottles were incubated for 3 and 24 h at room temperature. The five treatments are coded as follows: control (c), 3h heat treatment (h3), 24h heat treatment (h24), 3h nutrient treatment (n3) and 24h nutrient treatment (n24). Two fluorescent dyes, SYBR Green and Propidium Iodide, were used in combination as a viability indicator. The channels SS Log, FL 1 Log and FL 3 Log are used in the vignette, which correspond to the bandwidth filters for the side scatter and the staining. 
+
+\section{Loading the data}\label{sec:load}
+
+The example dataset can be loaded using the \texttt{data} function.
+The fset data object is a \texttt{flowCore} \texttt{flowSet} object with the raw flow cytometric data of the experiment (Ellis et al., 2013).
+
+<<Loading, echo=TRUE, resuls=verbatim>>==
+library(flowFDAExampleData)
+data(fset)
+fset
+@
+
+\section{flowSet Construction}
+
+The following commands were used to create the fset data included with this package.
+
+<<>>=
+library(flowFDA)
+#fset<-read.flowSet(path="~/Dropbox/LabMet/flowcytometry/stress_test_2/",
+#transformation=FALSE)
+#fset
+#
+##subset feet to reduce memory footprint
+#param=c("SS Log","FL 1 Log","FL 3 Log")
+#fset=fset[,param]
+#fset
+@ 
+
+We will use the channels SS Log, FL 1 Log and FL 3 Log, which correspond to the side scatter, SYBR green and Propidium Iodide staining bandpass filters. The data have been transformed to fall within a range of 0 and 1 and extremely low intensities are removed using a rectangular gate so as to avoid artefacts. The flowcytometer used in this study returned log transformed intensities and had a maximum log transformed intensity of $2^{16}$. 
+<<>>=
+#mytrans<-function(x) x/2^16
+#fset<-transform("FL 1 Log"=mytrans,"FL 3 Log"=mytrans,"SS Log"=mytrans)%on%fset
+#rg <- rectangleGate(filterId="myRectGate", list("SS Log"=c(1/2^17, Inf),
+#"FL 1 Log"=c(1/2^17, Inf),"FL 3 Log"=c(1/2^17,Inf)))
+#fset<-Subset(fset,rg)
+@
+ For other flow cytometers, it might be nessecary to log-transform the data first. This can be done by adopting a customized transform function or by setting the transformation flag in the \texttt{read.flowSet} function.
+<<>>=
+#logtrans<- function(x) log(x)
+@
+ 
+A good choice of the filename can enable an automated construction of the grouping variable
+<<>>=
+#construct experiment factor 
+#files<-list.files(path="~/Dropbox/LabMet/flowcytometry/stress_test_2/",pattern=".fcs")
+#expHlp<-unlist(strsplit(files,split="_replicate")) 
+#dim(expHlp)<-c(2,length(fset))
+#group<-as.factor(expHlp[1,])
+#nGroup<-nlevels(group)
+@
+\section*{References}
+De Roy, K., Clement, L., Thas, O., Wang, Y., and Boon, N. (2012). Flow cytometry for fast microbial community fingerprinting. Water Research, 46 (3), 907-919. 
+
+Ellis, B., Haaland, P., Hahne, F., Le Meur, N. and Gopalakrishnan, N. (2009). flowCore: flowCore: Basic structures for flow cytometry data. R package version 1.26.3.
+\end{document}
