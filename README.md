@@ -24,9 +24,9 @@ install_github("lievenclement/flowFDAExampleData", build_vignettes=TRUE)
 ```
 
 ### Copyright
-Copyright (C) 2016 Lieven Clement, Olivier Thas, Nico Boon
+Copyright (C) 2016 Lieven Clement, Olivier Thas, Nico Boon.
 
 ### Licenses
-The R/qtlcharts package as a whole is distributed under
-[GPL-3 (GNU General Public License version 3)](http://www.gnu.org/licenses/gpl-3.0.en.html)
+The flowFDADataExample package as a whole is distributed under
+[GPL-3 (GNU General Public License version 3)](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
